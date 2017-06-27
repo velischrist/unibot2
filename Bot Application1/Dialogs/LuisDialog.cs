@@ -11,6 +11,7 @@ using System.Text;
 
 namespace Bot_Application1.Dialogs
 {
+    //test
     [LuisModel("ebba0822-5d77-4203-9b77-75355aecca95", "a6b1fb43ba384a698242ea1da1ed098a")]
     [Serializable]
     public class LuisDialog : LuisDialog<object>
