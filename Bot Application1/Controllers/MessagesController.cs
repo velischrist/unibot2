@@ -12,34 +12,21 @@ namespace Bot_Application1
     public class MessagesController : ApiController
     {
 
-        LuisDialog<object> callDialogs()
-        {
-            return new Dialogs.LuisDialog();
-        }
-        /// <summary>
-        /// POST: api/Messages
-        /// Receive a message from a user and reply to it
-        /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            try
+            if (activity.Type == ActivityTypes.Message)
             {
-                if (activity.Type == ActivityTypes.Message)
-                {
-                    await Conversation.SendAsync(activity, callDialogs);
-                }
-                else
-                {
-                    HandleSystemMessage(activity);
-                }
-                var response = Request.CreateResponse(HttpStatusCode.OK);
-                return response;
+                await Conversation.SendAsync(activity, () => new Dialogs.LuisDialog());
             }
-            catch(Exception ex)
+            else
             {
-                return null;
+                HandleSystemMessage(activity);
             }
+            var response = Request.CreateResponse(HttpStatusCode.OK);
+            return response;
         }
+    
+        
 
         private Activity HandleSystemMessage(Activity message)
         {

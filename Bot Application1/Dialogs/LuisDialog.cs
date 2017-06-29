@@ -6,12 +6,12 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Luis.Models;
-using Universities_Data;
+using UniversitiesData;
 using System.Text;
+using Microsoft.Bot.Connector;
 
 namespace Bot_Application1.Dialogs
 {
-    //test2
     [LuisModel("ebba0822-5d77-4203-9b77-75355aecca95", "a6b1fb43ba384a698242ea1da1ed098a")]
     [Serializable]
     public class LuisDialog : LuisDialog<object>
@@ -19,12 +19,22 @@ namespace Bot_Application1.Dialogs
         [LuisIntent("Campus")]
         public async Task GetSize(IDialogContext context, LuisResult result)
         {
+            Universities sizes = new Universities();
+            string size = "";
             string university = "";
             EntityRecommendation rec;
             if (result.TryFindEntity("university", out rec))
             {
                 university = rec.Entity;
-                await context.PostAsync($"The campus of {university} is ");
+                if (sizes.CampusSize.TryGetValue($"{university}", out size))
+                {
+                    await context.PostAsync($"The campus of {university} is {size} ");
+                }
+                else
+                {
+                    await context.PostAsync("Sorry no university found.");
+                }
+
             }
             else
             {
@@ -35,12 +45,21 @@ namespace Bot_Application1.Dialogs
         [LuisIntent("AcceptanceRate")]
         public async Task GetAccRate(IDialogContext context, LuisResult result)
         {
+            Universities accrates = new Universities();
+            double accrate = 0.0;
             string university = "";
             EntityRecommendation rec;
             if (result.TryFindEntity("university", out rec))
             {
                 university = rec.Entity;
-                await context.PostAsync($"The acceptance rate of {university} is something");
+                if(accrates.AcceptanceRates.TryGetValue($"{university}", out accrate))
+                {
+                    await context.PostAsync($"The acceptance rate of {university} is {accrate}. ");
+                }
+                else
+                {
+                    await context.PostAsync("Sorry no university found.");
+                }
             }
             else
             {
@@ -48,6 +67,32 @@ namespace Bot_Application1.Dialogs
             }
             context.Wait(MessageReceived);
         }
-        
+
+        [LuisIntent("NumberOfUndergraduateStudents")]
+        public async Task GetUndergradStudents(IDialogContext context, LuisResult result)
+        {
+            Universities undergradstudents = new Universities();
+            int numberofundergraduatestudents = 0;
+            string university = "";
+            EntityRecommendation rec;
+            if (result.TryFindEntity("university", out rec))
+            {
+                university = rec.Entity;
+                if (undergradstudents.UndergradStudents.TryGetValue($"{university}", out numberofundergraduatestudents))
+                {
+                    await context.PostAsync($"{university} has {numberofundergraduatestudents} undergraduate students");
+                }
+                else
+                {
+                    await context.PostAsync("Sorry no university found.");
+                }
+            }
+            else
+            {
+                await context.PostAsync("Sorry no university found.");
+            }
+            context.Wait(MessageReceived);
+        }
+
     }
 }
