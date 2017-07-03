@@ -2,17 +2,18 @@
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using Microsoft.Bot.Builder.FormFlow;
+
 
 namespace Bot_Application1.Dialogs
 {
     [Serializable]
     public class RootDialog : IDialog<object>
     {
-        public Task StartAsync(IDialogContext context)
+        public async Task StartAsync(IDialogContext context)
         {
+            await context.PostAsync("hi");
             context.Wait(MessageReceivedAsync);
-
-            return Task.CompletedTask;
         }
 
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)

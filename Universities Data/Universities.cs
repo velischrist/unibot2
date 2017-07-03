@@ -16,6 +16,9 @@ namespace UniversitiesData
         public Dictionary<string, int> UndergradStudents;
         public Dictionary<string, string> ContactInfo;
         public Dictionary<string, int> Tuition;
+        public Dictionary<string, string> Location;
+        public Dictionary<string, string> ApplicationDeadlines;
+        public Dictionary<string, string> HowToApply;
 
         public Universities()
         {
@@ -24,7 +27,7 @@ namespace UniversitiesData
             if (CampusSize == null || CampusSize.Count == 0)
                 InitializeCampusSize();
             if (SatScoreRange == null || SatScoreRange.Count == 0)
-                InitializeAcceptanceRates();
+                InitializeSatScoreRange();
             if (ActScoreRange == null || ActScoreRange.Count == 0)
                 InitializeActScoreRange();
             if (UndergradStudents == null || UndergradStudents.Count == 0)
@@ -33,6 +36,12 @@ namespace UniversitiesData
                 InitializeContactInfo();
             if (Tuition == null || Tuition.Count == 0)
                 InitializeTuition();
+            if (Location == null || Location.Count == 0)
+                InitializeLocation();
+            if (ApplicationDeadlines == null || ApplicationDeadlines.Count == 0)
+                InitializeApplicationDeadlines();
+            if (HowToApply == null || HowToApply.Count == 0)
+                InitializeHowToApply();
         }
         public void InitializeAcceptanceRates()
         {
@@ -61,9 +70,9 @@ namespace UniversitiesData
         public void InitializeActScoreRange()
         {
             ActScoreRange = new Dictionary<string, string>();
-            ActScoreRange.Add("stanford", "");
-            ActScoreRange.Add("harvard", "");
-            ActScoreRange.Add("mit", "");
+            ActScoreRange.Add("stanford", "31-35");
+            ActScoreRange.Add("harvard", "32-35");
+            ActScoreRange.Add("mit", "33-35");
         }
 
         public void InitializeUndergradStudents()
@@ -77,18 +86,41 @@ namespace UniversitiesData
         public void InitializeContactInfo()
         {
             ContactInfo = new Dictionary<string, string>();
-            ContactInfo.Add("stanford", "");
-            ContactInfo.Add("harvard", "");
-            ContactInfo.Add("mit", "");
+            ContactInfo.Add("stanford", "https://www.stanford.edu/contact/");
+            ContactInfo.Add("harvard", "https://www.harvard.edu/contact-harvard");
+            ContactInfo.Add("mit", "https://www.mitadmissions.org/pages/contact-us");
         }
         
         public void InitializeTuition()
         {
             Tuition = new Dictionary<string, int>();
-            Tuition.Add("stanford", 0);
-            Tuition.Add("harvard", 0);
-            Tuition.Add("mit", 0);
+            Tuition.Add("stanford", 64782);
+            Tuition.Add("harvard", 65609);
+            Tuition.Add("mit", 67430);
         }
         
+        public void InitializeLocation()
+        {
+            Location = new Dictionary<string, string>();
+            Location.Add("stanford", "Stanford, California");
+            Location.Add("harvard", "Cambridge and Boston, Massachusetts");
+            Location.Add("mit", "Cambridge, Massachusetts");
+        }
+
+        public void InitializeApplicationDeadlines()
+        {
+            ApplicationDeadlines = new Dictionary<string, string>();
+            ApplicationDeadlines.Add("stanford", "The deadlines for Stanford are: 11/01/2017 for Restrictive Early Action and 01/03/2018 for Regular Decision");
+            ApplicationDeadlines.Add("harvard", "The deadlines for harvard are: 11/01/2017 for Restrictive Early Action and 01/01/2018 for Regular Decision");
+            ApplicationDeadlines.Add("mit", "The deadlines for mit are: 11/01/2017 for Early Action and 01/01/2018 for Regular Decision");
+        }
+
+        public void InitializeHowToApply()
+        {
+            HowToApply = new Dictionary<string, string>();
+            HowToApply.Add("stanford", "Visit the link: http://www.commonapp.org/ and apply now");
+            HowToApply.Add("harvard", "Visit the link: http://www.commonapp.org/ and apply now");
+            HowToApply.Add("mit", "Visit the link: https://my.mit.edu/uaweb/login.htm and apply now");
+        }
     }
 }
