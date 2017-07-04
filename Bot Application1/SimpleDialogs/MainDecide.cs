@@ -13,7 +13,6 @@ namespace Bot_Application1.Dialogs
     [Serializable]
     public class MainDecide : IDialog<object>
     {
-
         public Task StartAsync(IDialogContext context)
         {
             context.Wait(MessageReceivedAsync);
@@ -24,36 +23,34 @@ namespace Bot_Application1.Dialogs
             var message = await argument;
             context.Call(Decide.BuildFormDialog(FormOptions.PromptInStart), FormComplete);
         }
-
         private async Task FormComplete(IDialogContext context, IAwaitable<Decide> result)
         {
-                try
+            try
+            {
+                var form = await result;
+                if (form != null)
                 {
-                    var form = await result;
-                    if (form != null)
+                    if (form.Like.GetHashCode() == 1)
                     {
-                        if (form.Like.GetHashCode() == 1)
-                        {
-                            await context.PostAsync("Ask whatever you want.");
-                            
-                        }
-                        else
-                        {
-                            await context.PostAsync("Answer the following questions so tha we can determine which university suits you the best.");
-                            await Conversation.SendAsync(, () => new Dialogs.MainDialog());
-                        }
+
+                        await context.PostAsync("Ask whatever you want.");
                     }
                     else
                     {
-                        await context.PostAsync("Form returned empty response! Type anything to restart it.");
+                        await context.PostAsync("Answer the following questions so tha we can determine which university suits you the best.");
+                        //             await Conversation.SendAsync(IMessageActivity, () => new Dialogs.MainDialog());
                     }
                 }
-                catch (OperationCanceledException)
+                else
                 {
-                    await context.PostAsync("You canceled the form! Type anything to restart it.");
+                    await context.PostAsync("Form returned empty response! Type anything to restart it.");
                 }
-
+            }
+            catch (OperationCanceledException)
+            {
+                await context.PostAsync("You canceled the form! Type anything to restart it.");
                 context.Wait(MessageReceivedAsync);
+            }
         }
     }
 }

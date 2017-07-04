@@ -24,8 +24,8 @@ namespace Bot_Application1
             var response = Request.CreateResponse(HttpStatusCode.OK);
             return response;
         }
-    
-        
+
+
 
         private Activity HandleSystemMessage(Activity message)
         {
