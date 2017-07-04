@@ -32,13 +32,13 @@ namespace Bot_Application1.Dialogs
                 {
                     if (form.Like.GetHashCode() == 1)
                     {
-
                         await context.PostAsync("Ask whatever you want.");
+                        context.Call(new LuisDialog(), this.ResumeAfterOptionDialog);
                     }
                     else
                     {
                         await context.PostAsync("Answer the following questions so tha we can determine which university suits you the best.");
-                        //             await Conversation.SendAsync(IMessageActivity, () => new Dialogs.MainDialog());
+                        context.Call(new MainDialog(), this.ResumeAfterOptionDialog);
                     }
                 }
                 else
@@ -50,6 +50,21 @@ namespace Bot_Application1.Dialogs
             {
                 await context.PostAsync("You canceled the form! Type anything to restart it.");
                 context.Wait(MessageReceivedAsync);
+            }
+        }
+        private async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            try
+            {
+                var message = await result;
+            }
+            catch (Exception ex)
+            {
+                await context.PostAsync($"Failed with message: {ex.Message}");
+            }
+            finally
+            {
+                context.Wait(this.MessageReceivedAsync);
             }
         }
     }
